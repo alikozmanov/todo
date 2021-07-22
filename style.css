@@ -1,0 +1,62 @@
+
+ 
+ul {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  background-color: #333;
+  overflow: hidden;
+}
+li {
+  float: right;
+
+}
+li a {
+  display: block;
+  color: #fff;
+  text-align: center;
+  padding: 10px;
+  text-decoration: none;
+}
+li a:hover {
+
+  background-color: gold;
+ 
+}
+
+h1{
+  text-align: left;
+  margin: 0px;
+  padding: 0px;
+
+}
+
+footer {  
+  vertical-align: bottom;
+  text-align: center;
+  color: white;
+  background: black; 
+  position: absolute;
+  bottom:0;
+  width:100%;
+  padding-top:5px;
+  height:100px;
+  }
+
+table,th,td {
+
+  border:#000000 1px solid;
+  border-collapse: collapse;
+
+}
+
+.logo {
+  float: left;
+}
+
+ 
+  
+
+ 
+
+
