@@ -4,8 +4,7 @@
 	$description=$_POST['description'];
 	$date=$_POST['date'];
 	$fait=$_POST['fait'];
-	$sql = "INSERT INTO `todo`( `nom`, `description`,`date` , `fait`) 
-	VALUES ('$nom','$description','$date','$fait')";
+	$sql = "INSERT INTO `todo`( `nom`, `description`,`date` , `fait`) VALUES ('$nom','$description','$date','$fait')";
 	if (mysqli_query($conn, $sql)) {
 		echo json_encode(array("statusCode"=>200));
 	} 

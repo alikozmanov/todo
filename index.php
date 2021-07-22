@@ -16,12 +16,9 @@
   
   
     <ul>
-            <li class="logo"><a href="TODO">TODO</a></li>
-            <li class="id.php"><a href="id.php">id</a></li>
-            <li class="nom.php"><a href="nom.php">nom</a></li>
-            <li class="description.php"><a href="description.php">description</a></li>
-           <li class="date.php"><a href="date.php">date</a></li>
-            <li class="fait.php"><a href="fait.php">fait</a></li>
+        <li class="logo"><a href="TODO">TODO</a></li>
+        <li><a href="mentionslegales.php">Mentions Légales</a></li>
+        <li><a href="contact.php">Contact</a></li>
     </ul>
 
 
@@ -31,23 +28,17 @@
   <table>
      <tr> 
         <th>id</th>
-      
-        <th>nom></th>
-        
+        <th>nom</th>
         <th>description</th>
-        
-         <th>date</th>
-        
+        <th>date</th>
         <th>fait</th>
         <th>action 1</th>
         <th>action 2</th>
      </tr>
-     <?php
-
-
+<?php
 $servername = "localhost";
-$username = "root";
-$password = "root";
+$username = "ogue";
+$password = "oguz";
 $dbname = "bddtodo";
 
 // Create connection
@@ -71,7 +62,7 @@ if ($result->num_rows > 0) {
     echo "<td id=\"date".$row["id"]."\">". $row["date"]."</td>";
     echo "<td id=\"fait".$row["id"]."\">". $row["fait"]."</td>";  
     echo "<td><button onclick=deleteData(". $row["id"].")>supprimer</button></td>";
-    echo "<td><input type=\"button\" name=\"save".$row["id"]."\" class=\"btn btn-primary\" value=\"editer\" id=\"butsave2\"></td>";
+    echo "<td><button onclick=updateData(".$row["id"].")>editer</button></td>";
     echo "</tr>";
     echo "</form>";
   }
@@ -80,45 +71,35 @@ if ($result->num_rows > 0) {
 }
 $conn->close();
 
-  
-
-
 ?>
 
 <form id="fupForm" name="form1" method="post">
-  <tr>
-    <td>ajouter une tache</td>
+  	<tr>
+    	<td>ajouter une tache</td>
 		<td class="form-group">
-		
 			<input type="text" class="form-control" id="nom" placeholder="Nom" name="nom">
 		</td>
 		<td class="form-group">
-		
 			<input type="textarea" class="form-control" id="description" placeholder="description" name="description">
 		</td>
 		<td class="form-group">
-		
 			<input type="date" class="form-control" id="date"  name="date">
 		</td>
 		<td class="form-group" >
-    <select name= "fait" id="fait">
-      <option value="0">non</option>
-      <option value="1">oui</option>
-    
-    </select>
-		
-	
+			<select name= "fait" id="fait">
+			<option value="0">non</option>
+			<option value="1">oui</option>
+			</select>
 		</td>
-  
 		<td><input type="button" name="save" class="btn btn-primary" value="ajouter" id="butsave"></td>
     </tr>
-	</form>
+</form>
 
   </table>
 <div id="msg"></div>
 <div id="table-container"></div>
 <script>
-
+// Insert
 $(document).ready(function() {
 	$('#butsave').on('click', function() {
 		$("#butsave").attr("disabled", "disabled");
@@ -138,6 +119,7 @@ $(document).ready(function() {
 				},
 				cache: false,
 				success: function(dataResult){
+					console.log(dataResult);
 					var dataResult = JSON.parse(dataResult);
 					if(dataResult.statusCode==200){
 						$("#butsave").removeAttr("disabled");
@@ -160,48 +142,29 @@ $(document).ready(function() {
 	});
      
 });
-
-$(document).ready(function() {
-	$('#butsave2').on('click', function() {
-		$("#butsave2").attr("disabled", "disabled");
-    var id = $("#butsave2").attr("name").replace("save","");
-		var nom = $('#nom'+id).html();
-		var description = $('#description'+id).html();
-	
-    // console.log("id:"+id+" nom:"+nom+" description:"+description+" date:"+date+" fait:"+fait);
-		if(nom!="" && description!=""){
-			$.ajax({
-				url: "editer.php",
-				type: "POST",
-				data: { 
-          id: id,
-					nom: nom,
-					description: description		
-				},
-				cache: false,
-				success: function(dataResult){
-					var dataResult = JSON.parse(dataResult);
-					if(dataResult.statusCode==200){
-						$("#butsave2").removeAttr("disabled");
-						$('#updateForm').find('input:text').val('');
-						$("#success").show();
-						$('#success').html('Data updated successfully !'); 	
- 
-            location.reload();			
-					}
-					else if(dataResult.statusCode==201){
-					   alert("Error occured !");
-					}
-					
-				}
-			});
-		}
-		else{
-			alert('Please fill all the field !');
-		}
-	});
-     
-});
+// Update
+function updateData(id) {
+	var nom = $('#nom'+id).html();
+	var description = $('#description'+id).html();
+	if(nom!="" && description!="") {
+		$.ajax({
+			url: "editer.php",
+			type: "POST",
+			data: { 
+				id: id,
+				nom: nom,
+				description: description	
+			},
+			cache: false,
+			success: function(data){
+				console.log(data);
+				location.reload(true);
+			}
+		});
+	} else {
+		alert('Please fill all the field !');
+	}
+}
 
 function deleteData(id) {
 
@@ -223,12 +186,7 @@ location.reload();
 
 </script>
 
-<footer>
-
-
-réalisé par alik ozmanov 12 juillet 2021
-   
-</footer>
+	<footer>réalisé par alik ozmanov 12 juillet 2021</footer>
 
  </body>
 </html>
