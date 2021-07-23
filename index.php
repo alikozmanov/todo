@@ -6,6 +6,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="stylesheet" href="style.css">
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+
   <title>todo</title>
 </head>
 
@@ -16,29 +18,40 @@
   
   
     <ul>
-        <li class="logo"><a href="TODO">TODO</a></li>
-        <li><a href="mentionslegales.php">Mentions Légales</a></li>
-        <li><a href="contact.php">Contact</a></li>
+            <li class="logo"><a href="TODO">TODO</a></li>
+            <li class="id.php"><a href="id.php">id</a></li>
+            <li class="nom.php"><a href="nom.php">nom</a></li>
+            <li class="description.php"><a href="description.php">description</a></li>
+           <li class="date.php"><a href="date.php">date</a></li>
+            <li class="fait.php"><a href="fait.php">fait</a></li>
     </ul>
 
 
 
   </header>
   
-  <table>
+  <table class="table">
+  <thead class="thead-dark">
      <tr> 
-        <th>id</th>
-        <th>nom</th>
-        <th>description</th>
-        <th>date</th>
-        <th>fait</th>
-        <th>action 1</th>
-        <th>action 2</th>
+        <th scope="col">id</th>
+      
+        <th scope="col">nom></th>
+        
+        <th scope="col">description</th>
+        
+         <th scope="col">date</th>
+        
+        <th scope="col">fait</th>
+        <th scope="col">action 1</th>
+        <th scope="col">action 2</th>
      </tr>
-<?php
+	 </thead>
+     <?php
+
+
 $servername = "localhost";
-$username = "ogue";
-$password = "oguz";
+$username = "root";
+$password = "root";
 $dbname = "bddtodo";
 
 // Create connection
@@ -59,10 +72,14 @@ if ($result->num_rows > 0) {
     echo "<td id=\"id\">". $row["id"]."</td>";
     echo "<td id=\"nom".$row["id"]."\" contenteditable>". $row["nom"]."</td>";
     echo "<td id=\"description".$row["id"]."\" contenteditable>". $row["description"]."</td>";
-    echo "<td id=\"date".$row["id"]."\">". $row["date"]."</td>";
-    echo "<td id=\"fait".$row["id"]."\">". $row["fait"]."</td>";  
-    echo "<td><button onclick=deleteData(". $row["id"].")>supprimer</button></td>";
-    echo "<td><button onclick=updateData(".$row["id"].")>editer</button></td>";
+	echo "<td id=\"date".$row["id"]."\">". $row["date"]."</td>";
+	if ($row["fait"]== 0){
+		echo "<td style=\"background:red;\" id=\"fait".$row["id"]."\"></td>";	
+	} else {
+		echo "<td style=\"background:green;\" id=\"fait".$row["id"]."\"></td>";	
+	}
+    echo "<td><button  class=\"btn btn-danger\" onclick=deleteData(". $row["id"].")>supprimer</button></td>";
+    echo "<td><button  class=\"btn btn-warning\" onclick=updateData(".$row["id"].")>editer</button></td>";
     echo "</tr>";
     echo "</form>";
   }
@@ -71,35 +88,45 @@ if ($result->num_rows > 0) {
 }
 $conn->close();
 
+  
+
+
 ?>
 
 <form id="fupForm" name="form1" method="post">
-  	<tr>
-    	<td>ajouter une tache</td>
+  <tr>
+    <td>ajouter une tache</td>
 		<td class="form-group">
+		
 			<input type="text" class="form-control" id="nom" placeholder="Nom" name="nom">
 		</td>
 		<td class="form-group">
+		
 			<input type="textarea" class="form-control" id="description" placeholder="description" name="description">
 		</td>
 		<td class="form-group">
+		
 			<input type="date" class="form-control" id="date"  name="date">
 		</td>
 		<td class="form-group" >
-			<select name= "fait" id="fait">
-			<option value="0">non</option>
-			<option value="1">oui</option>
-			</select>
+    <select class="form-select" name= "fait" id="fait">
+      <option value="0">non</option>
+      <option value="1">oui</option>
+    
+    </select>
+		
+	
 		</td>
-		<td><input type="button" name="save" class="btn btn-primary" value="ajouter" id="butsave"></td>
+  
+		<td><input type="button" name="save" class="btn btn-success" value="ajouter" id="butsave"></td>
     </tr>
-</form>
+	</form>
 
   </table>
 <div id="msg"></div>
 <div id="table-container"></div>
 <script>
-// Insert
+
 $(document).ready(function() {
 	$('#butsave').on('click', function() {
 		$("#butsave").attr("disabled", "disabled");
@@ -119,7 +146,6 @@ $(document).ready(function() {
 				},
 				cache: false,
 				success: function(dataResult){
-					console.log(dataResult);
 					var dataResult = JSON.parse(dataResult);
 					if(dataResult.statusCode==200){
 						$("#butsave").removeAttr("disabled");
@@ -142,7 +168,8 @@ $(document).ready(function() {
 	});
      
 });
-// Update
+
+		// Update
 function updateData(id) {
 	var nom = $('#nom'+id).html();
 	var description = $('#description'+id).html();
@@ -158,6 +185,7 @@ function updateData(id) {
 			cache: false,
 			success: function(data){
 				console.log(data);
+				window.location.href+="#last";
 				location.reload(true);
 			}
 		});
@@ -186,7 +214,12 @@ location.reload();
 
 </script>
 
-	<footer>réalisé par alik ozmanov 12 juillet 2021</footer>
+<footer>
+
+
+réalisé par alik ozmanov 12 juillet 2021
+   
+</footer>
 
  </body>
 </html>

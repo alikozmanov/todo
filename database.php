@@ -1,8 +1,8 @@
 <?php 
 
 $servername = "localhost";
-$username = "ogue";
-$password = "oguz";
+$username = "root";
+$password = "root";
 $dbname = "bddtodo";
 
 // Create connection
